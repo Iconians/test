@@ -2,6 +2,7 @@ import React, { createContext, ReactNode, useContext, useState } from "react";
 import { fetchFavorites } from "../fetches/fetchFavorites";
 import { fetchCarvings } from "../fetches/getCarvings";
 import { Carving, Favorite } from "../interfaces";
+import { get } from "http";
 
 interface FavoriteContextInterface {
   fetchFavoriteCarvings: () => Promise<Carving[]>;
@@ -39,8 +40,9 @@ export const FavoriteProvider = ({ children }: FavoritesProviderProps) => {
   };
 
   const fetchFavoriteCarvings = async () => {
+    const userId = getUserId();
     const carvings = await fetchCarvings();
-    const favorites = await fetchFavorites();
+    const favorites = await fetchFavorites(userId);
     return findFavorites(favorites, carvings);
   };
 

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { carvingPictures } from "../../assets/carvingPictures";
-import { addCarvings } from "../../fetches/addCarving";
 import { addCarvingForm } from "../../formInputData";
 import { useFavoriteContext } from "../../providers/favorites.provider";
 import { NavBar } from "../NavBar/NavBar";
 import "./AddCarvingPage.css";
+import { uploadCarvings } from "../../fetches/uploadCarving";
+import { useAuthContext } from "../../providers/auth.provider";
 
 export const AddCarvingPage = () => {
   const [carvingName, setCarvingName] = useState("");
@@ -16,6 +17,8 @@ export const AddCarvingPage = () => {
   const [price, setPrice] = useState("");
   const [story, setStory] = useState("");
   const { getUserId } = useFavoriteContext();
+
+  const { token } = useAuthContext();
 
   const captureInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -91,12 +94,22 @@ export const AddCarvingPage = () => {
         story: story,
         type: handCarved ? "handCarved" : "machinedCarved",
         availableToPurchase: availableToSell,
-        price: price.length ? parseInt(price) : null,
+        price: price.length ? parseInt(price) : 0,
         userId: getUserId(),
-        carversName: getUserName(),
+        carverName: getUserName(),
         qty: 1,
       };
-      addCarvings(carving).then((data) => {
+      // image: "../src/assets/bear.jpg",
+      // carvingName: "Bear",
+      // userId: jon.id,
+      // carverName: jon.name,
+      // availableToPurchase: false,
+      // story:
+      //   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      // type: "machinedCarved",
+      // price: 0,
+      // qty: 1,
+      uploadCarvings(carving, token).then((data) => {
         if (data.ok === true) {
           resetForm();
         }

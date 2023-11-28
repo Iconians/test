@@ -5,6 +5,12 @@
       "email": "email@email.com",
       "password": "password",
       "id": 1
+    },
+    {
+      "name": "Clayton",
+      "email": "clayton@clayton.com",
+      "password": "P@ssword1",
+      "id": 2
     }
   ],
   "carvings": [
@@ -105,7 +111,41 @@
       "id": 8
     }
   ],
-  "userCart": [],
-  "favorites": [],
-  "purchases": []
+  "userCart": [
+    {
+      "userId": 2,
+      "productId": 4,
+      "id": 1
+    }
+  ],
+  "favorites": [
+    {
+      "userId": 2,
+      "carvingId": 4,
+      "id": 1
+    },
+    {
+      "userId": 2,
+      "carvingId": 3,
+      "id": 2
+    }
+  ],
+  "purchases": [
+    {
+      "userId": 2,
+      "carvingId": [
+        5
+      ],
+      "name": "Clayton J",
+      "address": "51331 lksm;l",
+      "city": "spokane",
+      "state": "AL : Alabama",
+      "zip": "53153",
+      "cardType": "MASTERCARD",
+      "cardNumbers": "5416 5313 5135 1351",
+      "expMonthDate": "Feb",
+      "expYearDate": "2027",
+      "id": 1
+    }
+  ]
 }

@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { addFavorite } from "../../fetches/addFavorite";
-import { deleteFetch } from "../../fetches/deleteFetch";
 import { fetchFavorites } from "../../fetches/fetchFavorites";
 import { Favorite } from "../../interfaces";
 import { useCarvingContext } from "../../providers/carvings.provider";
 import { useFavoriteContext } from "../../providers/favorites.provider";
 import { NavBar } from "../NavBar/NavBar";
+import { deleteFavorites } from "../../fetches/deleteFavorite";
 import "./ProductPage.css";
 
 export const ProductPage = () => {
@@ -67,12 +67,13 @@ export const ProductPage = () => {
     });
   };
 
-  const deleteFavorites = (id: number) => {
+  const deleteAFavorites = (id: number) => {
+    const userId = getUserId();
     const getFavorite = favoriteArray.find(
       (favorite) => favorite.carvingId === id
     );
     if (getFavorite !== undefined) {
-      deleteFetch(getFavorite).then((res) => {
+      deleteFavorites(getFavorite, userId).then((res) => {
         if (res.ok) {
           setFavoriteArray(
             favoriteArray.filter((carving) => carving.carvingId !== id)
@@ -95,7 +96,8 @@ export const ProductPage = () => {
   };
 
   useEffect(() => {
-    fetchFavorites().then((data) => {
+    const userId = getUserId();
+    fetchFavorites(userId).then((data) => {
       findFavorites(data);
     });
   }, [favoriteArray.length, cartItems.length]);
@@ -117,7 +119,7 @@ export const ProductPage = () => {
                     icon={faHeart}
                     className="heart-icon"
                     onClick={() => {
-                      deleteFavorites(carving.id);
+                      deleteAFavorites(carving.id);
                     }}
                   />
                 ) : (

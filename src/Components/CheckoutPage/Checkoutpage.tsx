@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AMERICANEXPRESS, OTHERCARDS } from "../../constants";
-import { addPurchase } from "../../fetches/addPurchase";
+// import { addPurchase } from "../../fetches/purchaseItems";
 import { listOfMonths } from "../../listOfMonths";
 import { listOfStates } from "../../ListOfStates";
 import { listOfYears } from "../../listOfYears";
@@ -208,16 +208,16 @@ export const CheckoutPage = () => {
       expYearDate: expireYear,
     };
 
-    if (!inputError) {
-      addPurchase(formData).then((res) => {
-        if (res.ok) {
-          navigate("/ConfirmationPage");
-          deleteItemsFromCartAfterPurchase();
-        }
-      });
-    } else {
-      toast.error("fix the errors to submit your purchase");
-    }
+    // if (!inputError) {
+    //   addPurchase(formData).then((res) => {
+    //     if (res.ok) {
+    //       navigate("/ConfirmationPage");
+    //       deleteItemsFromCartAfterPurchase();
+    //     }
+    //   });
+    // } else {
+    //   toast.error("fix the errors to submit your purchase");
+    // }
   };
 
   useEffect(() => {

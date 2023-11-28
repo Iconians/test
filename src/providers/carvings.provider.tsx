@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { addToUserCart } from "../fetches/addToUserCart";
 import { deleteCartFetch } from "../fetches/deleteCartFetch";
-import { fetchUsersCart } from "../fetches/fetchUsersCart";
+// import { fetchUsersCart } from "../fetches/fetchUsersCart";
 import { fetchCarvings } from "../fetches/getCarvings";
 import { Carving, userCart } from "../interfaces";
 
@@ -48,8 +48,8 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
       toast.error("Please log In to add carving to cart");
       return;
     }
-    addToUserCart(item, userId);
-    setCartItems([...cartItems, item]);
+    // addToUserCart(item, userId);
+    // setCartItems([...cartItems, item]);
   };
 
   const findCart = (usersCart: userCart[], carvings: Carving[]) => {
@@ -67,24 +67,24 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
   };
 
   const fetchCart = async () => {
-    const carvings = await fetchCarvings();
-    const userCart = await fetchUsersCart();
-    return findCart(userCart, carvings);
+    // const carvings = await fetchCarvings();
+    // // const userCart = await fetchUsersCart();
+    // return findCart(userCart, carvings);
   };
 
   const checkCart = async () => {
     const cart = await fetchCart();
-    setCartItems(cart);
+    // setCartItems(cart);
   };
 
   const deleteItemsFromCartAfterPurchase = async () => {
-    const getCartItems = await fetchUsersCart();
-    const getId = getUserId();
-    const filterCart = getCartItems.filter((item) => item.userId === getId);
-    for (let item of filterCart) {
-      deleteCartFetch(item.id);
-    }
-    setCartItems([]);
+    // const getCartItems = await fetchUsersCart();
+    // const getId = getUserId();
+    // const filterCart = getCartItems.filter((item) => item.userId === getId);
+    // for (let item of filterCart) {
+    //   deleteCartFetch(item.id);
+    // }
+    // setCartItems([]);
   };
 
   useEffect(() => {

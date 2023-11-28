@@ -3,3 +3,5 @@ export const deleteCartFetch = (itemId: number) => {
     method: "DELETE",
   });
 };
+
+//       Authorization: `Bearer ${token}`,

@@ -1,18 +1,23 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { addUserFetch } from "../fetches/addUser";
+// import { addUserFetch } from "../fetches/CreateUser";
 import { toast } from "react-hot-toast";
-import { fetchUsers } from "../fetches/fetchUsers";
+// import { fetchUsers } from "../fetches/signInUser";
 import { newUser, userCart, Users } from "../interfaces";
+import { signInUser } from "../fetches/signInUser";
+import { set } from "lodash-es";
+import { CreateAUser } from "../fetches/CreateAUser";
 
 interface AuthContextInterface {
   user: Users | undefined;
   createUser: (user: newUser, redirectToHome: () => void) => void;
-  signinUser: (
+  signinCurrentUser: (
     email: string,
     password: string,
-    redirectToHome: () => void
+    redirectToHome: () => void,
+    token: string
   ) => void;
   signoutUser: () => void;
+  token: string;
 }
 
 type AuthProviderProps = {
@@ -23,68 +28,44 @@ const AuthContext = createContext({} as AuthContextInterface);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<Users>();
+  const [token, setToken] = useState<string>("");
 
-  const findUser = async (newUser: newUser) => {
-    return await fetchUsers().then((data) => {
-      return data.find((item) => item.email === newUser.email);
+  const createUser = async (user: newUser, redirectToHome: () => void) => {
+    await CreateAUser(user).then((res) => {
+      console.log(res);
+      if (res.userInfo !== undefined) {
+        setUser(res.userInfo);
+        setToken(res.token);
+        localStorage.setItem("user", JSON.stringify(res.userInfo));
+        redirectToHome();
+        toast.success("Created Account and Logged In");
+      } else {
+        toast.error(res.message);
+      }
     });
   };
 
-  const addUserToDB = async (
-    checkForUsers: Users | undefined,
-    user: newUser
-  ) => {
-    if (!checkForUsers) {
-      return await addUserFetch(user).then((response) => {
-        if (response.ok) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    }
-  };
-
-  const createUser = async (user: newUser, redirectToHome: () => void) => {
-    const getAllUsers = await fetchUsers();
-    const checkForUsers = getAllUsers.find((item) => item.email === user.email);
-    const addUser = await addUserToDB(checkForUsers, user);
-    const getUser = await findUser(user);
-    if (addUser === true && getUser !== undefined) {
-      localStorage.setItem("user", JSON.stringify(getUser));
-      console.log(getUser);
-      setUser(getUser);
-      redirectToHome();
-      toast.success("Created and Account and Logged In");
-    } else {
-      toast.error("Account already exist with this email");
-    }
-  };
-
-  const signinUser = (
+  const signinCurrentUser = async (
     email: string,
     password: string,
     redirectToHome: () => void
   ) => {
-    fetchUsers().then((data) => {
-      const findAccount = data.find((item) => item.email === email);
-      if (findAccount !== undefined) {
-        if (findAccount.password === password) {
-          localStorage.setItem("user", JSON.stringify(findAccount));
-          setUser(findAccount);
-          redirectToHome();
-          toast.success("signed In");
-        } else {
-          toast.error("Incorrect Password");
-        }
+    await signInUser(email, password).then((turnToJson) => {
+      if (turnToJson.userinfo !== undefined) {
+        setUser(turnToJson.userinfo);
+        setToken(turnToJson.token);
+        localStorage.setItem("user", JSON.stringify(turnToJson.userinfo));
+        redirectToHome();
+        toast.success("signed In");
       } else {
-        toast.error("No Account Found");
+        toast.error(turnToJson.message);
       }
     });
   };
 
   const signoutUser = () => {
     setUser(undefined);
+    setToken("");
     localStorage.removeItem("user");
   };
 
@@ -100,8 +81,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       value={{
         user,
         createUser,
-        signinUser,
+        signinCurrentUser,
         signoutUser,
+        token,
       }}
     >
       {children}
@@ -114,7 +96,8 @@ export const useAuthContext = () => {
   return {
     user: context.user,
     createUser: context.createUser,
-    signinUser: context.signinUser,
+    signinUser: context.signinCurrentUser,
     signoutUser: context.signoutUser,
+    token: context.token,
   };
 };

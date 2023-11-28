@@ -5,7 +5,9 @@ const loggit = <T>(something: T) => {
   return something;
 };
 
-export const fetchFavorites = (): Promise<Favorite[]> => {
-  return fetch("http://localhost:3000/favorites").then((data) => data.json());
+export const fetchFavorites = async (userId: number) => {
+  return fetch(`http://localhost:3000/user/favorites/${userId}`).then((data) =>
+    data.json()
+  );
   // .then(loggit);
 };
