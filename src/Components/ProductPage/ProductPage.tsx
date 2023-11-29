@@ -60,9 +60,12 @@ export const ProductPage = () => {
           { userId: userId, carvingId: id, id: 0 },
         ]);
       } else {
-        toast.error(
-          "there was an error while trying to favorite the product please try again or contact us for further assistance"
-        );
+        const error = res.json().then((data) => {
+          toast.error(data.message);
+        });
+        // toast.error(
+        //   "there was an error while trying to favorite the product please try again or contact us for further assistance"
+        // );
       }
     });
   };
@@ -79,19 +82,24 @@ export const ProductPage = () => {
             favoriteArray.filter((carving) => carving.carvingId !== id)
           );
         } else {
-          toast.error(
-            "there was an error while trying to unfavorite the product please try again or contact us for further assistance"
-          );
+          const error = res.json().then((data) => {
+            toast.error(data.message);
+          });
+          // toast.error(
+          //   "there was an error while trying to unfavorite the product please try again or contact us for further assistance"
+          // );
         }
       });
     }
   };
 
   const addItemToCart = (id: string) => {
+    console.log(id);
     const findItem = carvingArray.find(
       (carving) => carving.id === parseInt(id)
     );
-    setCarvingQty(0);
+    // setCarvingQty(0);
+
     if (findItem !== undefined) addPurchaseItems(findItem);
   };
 
@@ -142,7 +150,7 @@ export const ProductPage = () => {
                     onClick={() => {
                       addItemToCart(`${carving.id}`);
                     }}
-                    disabled={carvingQty === 0}
+                    // disabled={carvingQty === 0}
                   >{`Add to Cart $${carving.price.toFixed(2)}`}</button>
                 ) : null}
               </div>

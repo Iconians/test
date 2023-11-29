@@ -16,6 +16,7 @@ export const CartModal = ({ openModal, openCartModal }: props) => {
   const { cartItems } = useCarvingContext();
   const [subtotal, setSubtotal] = useState<number | string>(0);
   const navigate = useNavigate();
+  // console.log(cartItems);
 
   const findSubtotal = () => {
     let total = 0;

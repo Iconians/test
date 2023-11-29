@@ -1,8 +1,7 @@
 import React, { createContext, ReactNode, useContext, useState } from "react";
 import { fetchFavorites } from "../fetches/fetchFavorites";
-import { fetchCarvings } from "../fetches/getCarvings";
+import { fetchCarvings } from "../fetches/fetcthCarvings";
 import { Carving, Favorite } from "../interfaces";
-import { get } from "http";
 
 interface FavoriteContextInterface {
   fetchFavoriteCarvings: () => Promise<Carving[]>;

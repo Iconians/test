@@ -2,9 +2,11 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { addToUserCart } from "../fetches/addToUserCart";
 import { deleteCartFetch } from "../fetches/deleteCartFetch";
-// import { fetchUsersCart } from "../fetches/fetchUsersCart";
-import { fetchCarvings } from "../fetches/getCarvings";
+import { fetchUsersCart } from "../fetches/fetchUsersCart";
+import { fetchCarvings } from "../fetches/fetcthCarvings";
 import { Carving, userCart } from "../interfaces";
+import { useAuthContext } from "./auth.provider";
+import { add } from "lodash-es";
 
 interface CarvingContextInterface {
   carvingArray: Carving[];
@@ -25,6 +27,7 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
   const [carvingArray, setCarvingArray] = useState<Carving[]>([]);
   const [cartItems, setCartItems] = useState<Carving[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const { token } = useAuthContext();
 
   const openCartModal = () => {
     if (openModal === false) {
@@ -42,49 +45,39 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
     }
   };
 
-  const addPurchaseItems = (item: Carving) => {
+  const addPurchaseItems = async (item: Carving) => {
     const userId = getUserId();
     if (userId === undefined) {
       toast.error("Please log In to add carving to cart");
       return;
     }
-    // addToUserCart(item, userId);
-    // setCartItems([...cartItems, item]);
-  };
-
-  const findCart = (usersCart: userCart[], carvings: Carving[]) => {
-    const user = getUserId();
-    let arr: Carving[] = [];
-    usersCart
-      .filter((favorite) => favorite.userId === user)
-      .map((favorite) => {
-        let findCarving = carvings.find(
-          (carving) => carving.id === favorite.productId
-        );
-        if (findCarving !== undefined) arr.push(findCarving);
+    const addToCart = await addToUserCart(item, userId, token);
+    if (addToCart.ok) {
+      toast.success("Added to cart");
+      setCartItems([...cartItems, item]);
+    } else {
+      addToCart.json().then((data) => {
+        toast.error(data.message);
       });
-    return arr;
-  };
-
-  const fetchCart = async () => {
-    // const carvings = await fetchCarvings();
-    // // const userCart = await fetchUsersCart();
-    // return findCart(userCart, carvings);
+    }
   };
 
   const checkCart = async () => {
-    const cart = await fetchCart();
-    // setCartItems(cart);
+    const userId = getUserId();
+    const getUserCart = await fetchUsersCart(userId);
+    console.log(getUserCart);
+    if (getUserCart.length) {
+      setCartItems([...getUserCart]);
+    } else {
+      setCartItems([]);
+    }
   };
 
   const deleteItemsFromCartAfterPurchase = async () => {
-    // const getCartItems = await fetchUsersCart();
-    // const getId = getUserId();
-    // const filterCart = getCartItems.filter((item) => item.userId === getId);
-    // for (let item of filterCart) {
-    //   deleteCartFetch(item.id);
-    // }
-    // setCartItems([]);
+    const getId = getUserId();
+    const deleteCart = deleteCartFetch(getId);
+    console.log(deleteCart);
+    setCartItems([]);
   };
 
   useEffect(() => {

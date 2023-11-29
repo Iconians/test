@@ -7,6 +7,6 @@ export const addToUserCart = (item: Carving, userId: number, token: string) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ userId: userId, productId: item.id }),
+    body: JSON.stringify({ userId: userId, carvingId: item.id }),
   });
 };

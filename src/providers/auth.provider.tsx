@@ -1,10 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
-// import { addUserFetch } from "../fetches/CreateUser";
 import { toast } from "react-hot-toast";
-// import { fetchUsers } from "../fetches/signInUser";
 import { newUser, userCart, Users } from "../interfaces";
 import { signInUser } from "../fetches/signInUser";
-import { set } from "lodash-es";
 import { CreateAUser } from "../fetches/CreateAUser";
 
 interface AuthContextInterface {
@@ -32,7 +29,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const createUser = async (user: newUser, redirectToHome: () => void) => {
     await CreateAUser(user).then((res) => {
-      console.log(res);
       if (res.userInfo !== undefined) {
         setUser(res.userInfo);
         setToken(res.token);

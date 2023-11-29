@@ -18,9 +18,9 @@ import { FavoriteProvider } from "./providers/favorites.provider";
 function App() {
   return (
     <div className="App">
-      <FavoriteProvider>
-        <CarvingProvider>
-          <AuthProvider>
+      <AuthProvider>
+        <FavoriteProvider>
+          <CarvingProvider>
             <Toaster />
             <Router>
               <Routes>
@@ -36,9 +36,9 @@ function App() {
                 <Route path="/addCarving" element={<AddCarvingPage />} />
               </Routes>
             </Router>
-          </AuthProvider>
-        </CarvingProvider>
-      </FavoriteProvider>
+          </CarvingProvider>
+        </FavoriteProvider>
+      </AuthProvider>
     </div>
   );
 }

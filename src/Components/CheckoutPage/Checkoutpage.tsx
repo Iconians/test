@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AMERICANEXPRESS, OTHERCARDS } from "../../constants";
-// import { addPurchase } from "../../fetches/purchaseItems";
 import { listOfMonths } from "../../listOfMonths";
 import { listOfStates } from "../../ListOfStates";
 import { listOfYears } from "../../listOfYears";
@@ -16,6 +15,8 @@ import {
 } from "../../validations";
 import { NavBar } from "../NavBar/NavBar";
 import "./CheckoutPage.css";
+import { useAuthContext } from "../../providers/auth.provider";
+import { purchaseItems } from "../../fetches/purchaseItems";
 
 export const CheckoutPage = () => {
   const location = useLocation();
@@ -33,6 +34,7 @@ export const CheckoutPage = () => {
   const [cardType, setCardType] = useState("");
   const [inputError, setInputError] = useState(true);
   const { cartItems, deleteItemsFromCartAfterPurchase } = useCarvingContext();
+  const { token } = useAuthContext();
   const { getUserId } = useFavoriteContext();
 
   const findTotal = () => {
@@ -206,18 +208,22 @@ export const CheckoutPage = () => {
       cardNumbers: cardNumber,
       expMonthDate: expireMonth,
       expYearDate: expireYear,
+      total: total,
     };
 
-    // if (!inputError) {
-    //   addPurchase(formData).then((res) => {
-    //     if (res.ok) {
-    //       navigate("/ConfirmationPage");
-    //       deleteItemsFromCartAfterPurchase();
-    //     }
-    //   });
-    // } else {
-    //   toast.error("fix the errors to submit your purchase");
-    // }
+    if (!inputError) {
+      purchaseItems(formData, token).then((res) => {
+        if (res.ok) {
+          console.log(res);
+          navigate("/ConfirmationPage");
+          deleteItemsFromCartAfterPurchase();
+        } else {
+          res.json().then((data) => {
+            toast.error(data.message);
+          });
+        }
+      });
+    }
   };
 
   useEffect(() => {
