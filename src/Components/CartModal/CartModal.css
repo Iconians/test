@@ -12,7 +12,8 @@
   box-shadow: rgb(0 0 0 / 6%) 0px 2px 4px;
   height: 100%;
   color: black;
-  overflow-y: auto
+  overflow-y: auto;
+  z-index: 100;
 } 
 
 .open {

@@ -4,9 +4,7 @@ import { addToUserCart } from "../fetches/addToUserCart";
 import { deleteCartFetch } from "../fetches/deleteCartFetch";
 import { fetchUsersCart } from "../fetches/fetchUsersCart";
 import { fetchCarvings } from "../fetches/fetcthCarvings";
-import { Carving, userCart } from "../interfaces";
-import { useAuthContext } from "./auth.provider";
-import { add } from "lodash-es";
+import { Carving } from "../interfaces";
 
 interface CarvingContextInterface {
   carvingArray: Carving[];
@@ -15,6 +13,7 @@ interface CarvingContextInterface {
   openModal: boolean;
   openCartModal: () => void;
   deleteItemsFromCartAfterPurchase: () => void;
+  fetchAllCarvings: () => void;
 }
 
 type CarvingProviderProps = {
@@ -27,7 +26,6 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
   const [carvingArray, setCarvingArray] = useState<Carving[]>([]);
   const [cartItems, setCartItems] = useState<Carving[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const { token } = useAuthContext();
 
   const openCartModal = () => {
     if (openModal === false) {
@@ -51,10 +49,15 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
       toast.error("Please log In to add carving to cart");
       return;
     }
-    const addToCart = await addToUserCart(item, userId, token);
+    const token = localStorage.getItem("token");
+    const addToCart = await addToUserCart(item, userId, token || "");
     if (addToCart.ok) {
       toast.success("Added to cart");
       setCartItems([...cartItems, item]);
+    } else if (addToCart.status === 401) {
+      toast.error(
+        "Your session has ended please log In to add carving to cart"
+      );
     } else {
       addToCart.json().then((data) => {
         toast.error(data.message);
@@ -65,7 +68,6 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
   const checkCart = async () => {
     const userId = getUserId();
     const getUserCart = await fetchUsersCart(userId);
-    console.log(getUserCart);
     if (getUserCart.length) {
       setCartItems([...getUserCart]);
     } else {
@@ -75,14 +77,18 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
 
   const deleteItemsFromCartAfterPurchase = async () => {
     const getId = getUserId();
-    const deleteCart = deleteCartFetch(getId);
-    console.log(deleteCart);
+    deleteCartFetch(getId);
     setCartItems([]);
+  };
+
+  const fetchAllCarvings = async () => {
+    const carvings = await fetchCarvings();
+    setCarvingArray(carvings);
   };
 
   useEffect(() => {
     checkCart();
-    fetchCarvings().then((data) => setCarvingArray(data));
+    fetchAllCarvings();
   }, []);
 
   return (
@@ -94,6 +100,7 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
         openModal,
         openCartModal,
         deleteItemsFromCartAfterPurchase,
+        fetchAllCarvings,
       }}
     >
       {children}
@@ -110,5 +117,6 @@ export const useCarvingContext = () => {
     openModal: context.openModal,
     openCartModal: context.openCartModal,
     deleteItemsFromCartAfterPurchase: context.deleteItemsFromCartAfterPurchase,
+    fetchAllCarvings: context.fetchAllCarvings,
   };
 };

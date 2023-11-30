@@ -3,7 +3,6 @@ import "./CartItemsHolder.css";
 
 export const CartItemHolder = () => {
   const { cartItems } = useCarvingContext();
-  console.log(cartItems);
   return (
     <div className="cart-itms-wrapper">
       <>

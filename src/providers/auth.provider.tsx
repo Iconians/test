@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { newUser, userCart, Users } from "../interfaces";
+import { newUser, Users } from "../interfaces";
 import { signInUser } from "../fetches/signInUser";
 import { CreateAUser } from "../fetches/CreateAUser";
 
@@ -10,11 +10,9 @@ interface AuthContextInterface {
   signinCurrentUser: (
     email: string,
     password: string,
-    redirectToHome: () => void,
-    token: string
+    redirectToHome: () => void
   ) => void;
   signoutUser: () => void;
-  token: string;
 }
 
 type AuthProviderProps = {
@@ -25,13 +23,12 @@ const AuthContext = createContext({} as AuthContextInterface);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<Users>();
-  const [token, setToken] = useState<string>("");
 
   const createUser = async (user: newUser, redirectToHome: () => void) => {
     await CreateAUser(user).then((res) => {
       if (res.userInfo !== undefined) {
         setUser(res.userInfo);
-        setToken(res.token);
+        localStorage.setItem("token", res.token);
         localStorage.setItem("user", JSON.stringify(res.userInfo));
         redirectToHome();
         toast.success("Created Account and Logged In");
@@ -49,8 +46,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     await signInUser(email, password).then((turnToJson) => {
       if (turnToJson.userinfo !== undefined) {
         setUser(turnToJson.userinfo);
-        setToken(turnToJson.token);
         localStorage.setItem("user", JSON.stringify(turnToJson.userinfo));
+        localStorage.setItem("token", turnToJson.token);
         redirectToHome();
         toast.success("signed In");
       } else {
@@ -61,7 +58,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signoutUser = () => {
     setUser(undefined);
-    setToken("");
+    localStorage.removeItem("token");
     localStorage.removeItem("user");
   };
 
@@ -79,7 +76,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         createUser,
         signinCurrentUser,
         signoutUser,
-        token,
       }}
     >
       {children}
@@ -94,6 +90,5 @@ export const useAuthContext = () => {
     createUser: context.createUser,
     signinUser: context.signinCurrentUser,
     signoutUser: context.signoutUser,
-    token: context.token,
   };
 };

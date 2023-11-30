@@ -33,8 +33,8 @@ export const CheckoutPage = () => {
   const [cardLength, setCardLength] = useState(19);
   const [cardType, setCardType] = useState("");
   const [inputError, setInputError] = useState(true);
-  const { cartItems, deleteItemsFromCartAfterPurchase } = useCarvingContext();
-  const { token } = useAuthContext();
+  const { cartItems, deleteItemsFromCartAfterPurchase, fetchAllCarvings } =
+    useCarvingContext();
   const { getUserId } = useFavoriteContext();
 
   const findTotal = () => {
@@ -71,8 +71,8 @@ export const CheckoutPage = () => {
     const validations = {
       name: (value: string) => {
         const checkName = onlyTextValidation(value);
-        if (!checkName) {
-          toast.error("Alpabetical letters only");
+        if (!checkName && value.length > 0) {
+          toast.error("Fill name field out with Alpabetical letters only");
           setInputError(true);
         } else {
           setInputError(false);
@@ -81,8 +81,8 @@ export const CheckoutPage = () => {
       address: () => "",
       city: (value: string) => {
         const checkAddress = onlyTextValidation(value);
-        if (!checkAddress) {
-          toast.error("Alpabetical letters only");
+        if (!checkAddress && value.length > 0) {
+          toast.error("Fill out with Alpabetical letters only");
           setInputError(true);
         } else {
           setInputError(false);
@@ -90,8 +90,8 @@ export const CheckoutPage = () => {
       },
       zip: (value: string) => {
         const checkZip = onlyNumberValidation(value);
-        if (!checkZip) {
-          toast.error("Numbers Only");
+        if (!checkZip && value.length > 0) {
+          toast.error("fill out with Numbers Only");
           setInputError(true);
         } else {
           setInputError(false);
@@ -99,8 +99,8 @@ export const CheckoutPage = () => {
       },
       cardnumber: (value: string) => {
         const checkCardNumber = cardNumberValidation(value);
-        if (!checkCardNumber) {
-          toast.error("Enter a Valid Card");
+        if (!checkCardNumber && value.length > 0) {
+          toast.error("fill in a Valid Card");
           setInputError(true);
         } else {
           setInputError(false);
@@ -109,8 +109,8 @@ export const CheckoutPage = () => {
       securitycode: (value: string) => {
         const checkSecurityCodeLenth = securityCodeValidation(3, value);
         const checkSecurityCodeIsNumber = onlyNumberValidation(value);
-        if (!checkSecurityCodeLenth) {
-          toast.error("must be 3 digits");
+        if (!checkSecurityCodeLenth && value.length > 0) {
+          toast.error("fill out with 3 digits");
           setInputError(true);
         }
         if (!checkSecurityCodeIsNumber) {
@@ -211,14 +211,21 @@ export const CheckoutPage = () => {
       total: total,
     };
 
+    if (inputError) toast.error("Please fill out all fields");
+
     if (!inputError) {
-      purchaseItems(formData, token).then((res) => {
+      // console.log(token);
+      const token = localStorage.getItem("token");
+      purchaseItems(formData, token || "").then((res) => {
         if (res.ok) {
-          console.log(res);
           navigate("/ConfirmationPage");
+          fetchAllCarvings();
           deleteItemsFromCartAfterPurchase();
+        } else if (res.status === 401) {
+          toast.error("Session ended Please Log In");
         } else {
           res.json().then((data) => {
+            console.log(data.message);
             toast.error(data.message);
           });
         }

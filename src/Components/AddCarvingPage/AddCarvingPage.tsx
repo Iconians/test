@@ -7,6 +7,7 @@ import { NavBar } from "../NavBar/NavBar";
 import "./AddCarvingPage.css";
 import { uploadCarvings } from "../../fetches/uploadCarving";
 import { useAuthContext } from "../../providers/auth.provider";
+import { useCarvingContext } from "../../providers/carvings.provider";
 
 export const AddCarvingPage = () => {
   const [carvingName, setCarvingName] = useState("");
@@ -17,7 +18,7 @@ export const AddCarvingPage = () => {
   const [price, setPrice] = useState("");
   const [story, setStory] = useState("");
   const { getUserId } = useFavoriteContext();
-
+  const { fetchAllCarvings } = useCarvingContext();
   const { token } = useAuthContext();
 
   const captureInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,6 +104,8 @@ export const AddCarvingPage = () => {
       uploadCarvings(carving, token).then((data) => {
         if (data.ok === true) {
           resetForm();
+          fetchAllCarvings();
+          toast.success("Carving added, do you want to add another?");
         } else {
           data.json().then((err) => {
             toast.error(err.message);

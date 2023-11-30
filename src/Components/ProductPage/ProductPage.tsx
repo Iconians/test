@@ -31,11 +31,8 @@ export const ProductPage = () => {
       (id) => id.id === location.state.productId
     );
     const cartQty = checkIfInCart();
-    const getQty = carvingArray.find(
-      (carvingPiece) => carvingPiece.id === findId?.qty
-    );
-    if (getQty !== undefined && cartQty === undefined) {
-      setCarvingQty(getQty.qty);
+    if (findId !== undefined && cartQty === undefined) {
+      setCarvingQty(findId.qty);
     }
   };
 
@@ -48,7 +45,6 @@ export const ProductPage = () => {
     if (carving.length) {
       setFavoriteArray(carving);
     }
-    inStock();
   };
 
   const addFavorites = (id: number) => {
@@ -60,12 +56,9 @@ export const ProductPage = () => {
           { userId: userId, carvingId: id, id: 0 },
         ]);
       } else {
-        const error = res.json().then((data) => {
+        res.json().then((data) => {
           toast.error(data.message);
         });
-        // toast.error(
-        //   "there was an error while trying to favorite the product please try again or contact us for further assistance"
-        // );
       }
     });
   };
@@ -82,12 +75,9 @@ export const ProductPage = () => {
             favoriteArray.filter((carving) => carving.carvingId !== id)
           );
         } else {
-          const error = res.json().then((data) => {
+          res.json().then((data) => {
             toast.error(data.message);
           });
-          // toast.error(
-          //   "there was an error while trying to unfavorite the product please try again or contact us for further assistance"
-          // );
         }
       });
     }
@@ -98,9 +88,10 @@ export const ProductPage = () => {
     const findItem = carvingArray.find(
       (carving) => carving.id === parseInt(id)
     );
-    // setCarvingQty(0);
 
-    if (findItem !== undefined) addPurchaseItems(findItem);
+    if (findItem !== undefined && findItem.qty > 0) {
+      addPurchaseItems(findItem);
+    }
   };
 
   useEffect(() => {
@@ -109,6 +100,10 @@ export const ProductPage = () => {
       findFavorites(data);
     });
   }, [favoriteArray.length, cartItems.length]);
+
+  useEffect(() => {
+    inStock();
+  }, [carvingArray.length]);
 
   return (
     <div className="product-page-wrapper" id="productPage">
@@ -144,14 +139,17 @@ export const ProductPage = () => {
                 <p>{carving.story}</p>
               </div>
               <div className="buttons-container">
-                {carving.price ? (
+                {carving.price && carving.qty > 0 ? (
                   <button
                     id={`${carving.id}`}
                     onClick={() => {
+                      console.log("clicked");
                       addItemToCart(`${carving.id}`);
                     }}
-                    // disabled={carvingQty === 0}
-                  >{`Add to Cart $${carving.price.toFixed(2)}`}</button>
+                    disabled={carvingQty === 0}
+                  >{`Add to Cart $${
+                    carving.qty ? carving.price.toFixed(2) : ""
+                  }`}</button>
                 ) : null}
               </div>
             </>

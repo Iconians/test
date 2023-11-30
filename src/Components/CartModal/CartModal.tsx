@@ -6,6 +6,7 @@ import { CartItemHolder } from "../CartItemsHolder/CartItemsHolder";
 import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
 import "./CartModal.css";
 import { useNavigate } from "react-router-dom";
+import { set } from "lodash-es";
 
 interface props {
   openModal: boolean;
@@ -30,6 +31,7 @@ export const CartModal = ({ openModal, openCartModal }: props) => {
     navigate("/CheckoutPage", {
       state: { subtotal: subtotal, cartItems: cartItems },
     });
+    openCartModal();
   };
 
   useEffect(() => {
