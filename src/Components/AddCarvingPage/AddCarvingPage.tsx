@@ -11,7 +11,7 @@ import { useCarvingContext } from "../../providers/carvings.provider";
 
 export const AddCarvingPage = () => {
   const [carvingName, setCarvingName] = useState("");
-  const [image, setImage] = useState(carvingPictures.bear);
+  const [image, setImage] = useState("");
   const [handCarved, setHandCarved] = useState(true);
   const [machinedCarved, setMachinedCarved] = useState(false);
   const [availableToSell, setAvailableToSell] = useState(false);
@@ -19,7 +19,7 @@ export const AddCarvingPage = () => {
   const [story, setStory] = useState("");
   const { getUserId } = useFavoriteContext();
   const { fetchAllCarvings } = useCarvingContext();
-  const { token } = useAuthContext();
+  // const { token } = useAuthContext();
 
   const captureInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -43,6 +43,9 @@ export const AddCarvingPage = () => {
         break;
       case "price":
         setPrice(value);
+        break;
+      case "image":
+        setImage(value);
         break;
     }
   };
@@ -77,7 +80,7 @@ export const AddCarvingPage = () => {
 
   const resetForm = () => {
     setCarvingName("");
-    setImage(carvingPictures.bear);
+    setImage("");
     setHandCarved(true);
     setMachinedCarved(false);
     setAvailableToSell(false);
@@ -87,8 +90,9 @@ export const AddCarvingPage = () => {
 
   const newCarving = () => {
     // when form submits we do this stuff
+    const token = localStorage.getItem("token");
     const areInputsValid = validations();
-    if (areInputsValid === true) {
+    if (areInputsValid === true && token) {
       const carving = {
         carvingName: carvingName,
         image: image,
@@ -142,7 +146,7 @@ export const AddCarvingPage = () => {
         >
           {addCarvingForm.map((input) =>
             input.type !== "radio" ? (
-              <>
+              <div className="form-inputs" key={input.key}>
                 <label htmlFor={input.name}>{input.labelName}</label>
                 <input
                   name={input.name}
@@ -151,9 +155,9 @@ export const AddCarvingPage = () => {
                   onChange={captureInput}
                   value={carvingName}
                 />
-              </>
+              </div>
             ) : (
-              <div className="radio-input">
+              <div className="radio-input" key={input.key}>
                 <input
                   name={input.name}
                   type={input.type}
@@ -170,6 +174,7 @@ export const AddCarvingPage = () => {
             <>
               <label htmlFor="">Price</label>
               <input
+                className="price-input"
                 type="text"
                 name="price"
                 placeholder="Price"
@@ -179,7 +184,19 @@ export const AddCarvingPage = () => {
             </>
           ) : null}
           <label htmlFor="image">Image</label>
-          <select
+          <input
+            className="image-input"
+            type="text"
+            name="image"
+            placeholder="Image url"
+            // onChange={(e) => {
+            //   setImage(e.target.value);
+            // }}
+            onChange={captureInput}
+            value={image}
+          />
+
+          {/* <select
             className="img-select"
             name="image"
             id=""
@@ -189,9 +206,10 @@ export const AddCarvingPage = () => {
             value={image}
           >
             {Object.entries(carvingPictures).map(([label, pictureValue]) => {
-              return <option value={pictureValue}>{label}</option>;
+              return <option value={pictureValue} key={label}>{label}</option>;
             })}
-          </select>
+
+          </select> */}
           <label htmlFor="story" className="textarea-label">
             Write your Story
           </label>

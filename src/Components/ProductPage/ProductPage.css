@@ -2,10 +2,17 @@
   padding-bottom: 50px;
 }
 
-.page-content-wrapper {
+/* .page-content-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+} */
+
+.parent-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* width: 100%; */
 }
 
 .h2-wrapper {
@@ -29,7 +36,14 @@
   top: 20px;
   right: 20px;
   font-size: 26px;
-  color: #FFC0CB;
+}
+
+.whole {
+  color: #f95933
+}
+
+.broken {
+  color: #b7b7b7;
 }
 
 .story-div {

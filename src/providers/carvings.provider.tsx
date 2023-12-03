@@ -5,6 +5,7 @@ import { deleteCartFetch } from "../fetches/deleteCartFetch";
 import { fetchUsersCart } from "../fetches/fetchUsersCart";
 import { fetchCarvings } from "../fetches/fetcthCarvings";
 import { Carving } from "../interfaces";
+import { get } from "http";
 
 interface CarvingContextInterface {
   carvingArray: Carving[];
@@ -65,7 +66,7 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
     }
   };
 
-  const checkCart = async () => {
+  const refreshCart = async () => {
     const userId = getUserId();
     const getUserCart = await fetchUsersCart(userId);
     if (getUserCart.length) {
@@ -87,9 +88,15 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
   };
 
   useEffect(() => {
-    checkCart();
     fetchAllCarvings();
   }, []);
+
+  useEffect(() => {
+    const user = getUserId();
+    if (user !== undefined) {
+      refreshCart();
+    }
+  }, [cartItems.length]);
 
   return (
     <CarvingContext.Provider

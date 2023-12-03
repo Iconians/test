@@ -12,4 +12,5 @@
 .brand-div {
   font-size: 30px;
   font-style: italic;
+  cursor: pointer;
 }

@@ -23,6 +23,22 @@
   border-color: sandybrown;
 }
 
+.shipping-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.shipping-info > input  {
+  width : 95%;
+  height: 30px;
+  margin-bottom: 15px;
+  outline-color: saddlebrown;
+  border-radius: 20px;
+  border-color: sandybrown;
+}
+
 .expire-wrapper > select {
   margin: 20px;
 }

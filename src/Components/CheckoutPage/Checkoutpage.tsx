@@ -249,7 +249,7 @@ export const CheckoutPage = () => {
         >
           <h2>Shipping Information</h2>
           {inputData.map((input) => (
-            <>
+            <div key={input.name} className="shipping-info">
               <label htmlFor={input.name}>{input.label}</label>
               <input
                 type="text"
@@ -258,7 +258,7 @@ export const CheckoutPage = () => {
                 onChange={input.onChange}
                 onBlur={handleBlur}
               />
-            </>
+            </div>
           ))}
 
           <label htmlFor="state">State</label>
@@ -269,7 +269,9 @@ export const CheckoutPage = () => {
             onChange={updateValue}
           >
             {listOfStates.map((state) => (
-              <option value={state}>{state}</option>
+              <option value={state} key={state}>
+                {state}
+              </option>
             ))}
           </select>
           <label htmlFor="zip">Zip</label>
@@ -301,7 +303,7 @@ export const CheckoutPage = () => {
               onChange={updateValue}
             >
               {listOfMonths.map((month) => (
-                <option>{month}</option>
+                <option key={month}>{month}</option>
               ))}
             </select>
             <label htmlFor="card-year-expire">Expire Year</label>
@@ -312,7 +314,7 @@ export const CheckoutPage = () => {
               onChange={updateValue}
             >
               {listOfYears.map((year) => (
-                <option>{year}</option>
+                <option key={year}>{year}</option>
               ))}
             </select>
           </div>

@@ -84,7 +84,6 @@ export const ProductPage = () => {
   };
 
   const addItemToCart = (id: string) => {
-    console.log(id);
     const findItem = carvingArray.find(
       (carving) => carving.id === parseInt(id)
     );
@@ -96,9 +95,11 @@ export const ProductPage = () => {
 
   useEffect(() => {
     const userId = getUserId();
-    fetchFavorites(userId).then((data) => {
-      findFavorites(data);
-    });
+    if (userId !== undefined) {
+      fetchFavorites(userId).then((data) => {
+        findFavorites(data);
+      });
+    }
   }, [favoriteArray.length, cartItems.length]);
 
   useEffect(() => {
@@ -111,8 +112,8 @@ export const ProductPage = () => {
       <div className="page-content-wrapper">
         {carvingArray.map((carving) =>
           carving.id === location.state.productId ? (
-            <>
-              <div className="h2-wrapper" key={carving.id}>
+            <div className="parent-div" key={carving.id}>
+              <div className="h2-wrapper">
                 <h2>{carving.carvingName}</h2>
               </div>
               <div className="product-img-wrapper">
@@ -120,7 +121,7 @@ export const ProductPage = () => {
                 {favoriteArray.length ? (
                   <FontAwesomeIcon
                     icon={faHeart}
-                    className="heart-icon"
+                    className="heart-icon whole"
                     onClick={() => {
                       deleteAFavorites(carving.id);
                     }}
@@ -128,7 +129,7 @@ export const ProductPage = () => {
                 ) : (
                   <FontAwesomeIcon
                     icon={faHeartBroken}
-                    className="heart-icon"
+                    className="heart-icon broken"
                     onClick={() => {
                       addFavorites(carving.id);
                     }}
@@ -143,7 +144,6 @@ export const ProductPage = () => {
                   <button
                     id={`${carving.id}`}
                     onClick={() => {
-                      console.log("clicked");
                       addItemToCart(`${carving.id}`);
                     }}
                     disabled={carvingQty === 0}
@@ -152,7 +152,7 @@ export const ProductPage = () => {
                   }`}</button>
                 ) : null}
               </div>
-            </>
+            </div>
           ) : null
         )}
       </div>

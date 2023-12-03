@@ -8,8 +8,8 @@ export const CartItemHolder = () => {
       <>
         <h3>Cart Items</h3>
         {cartItems.map((carving) => (
-          <div className="cart-card-wrapper">
-            <div className="cart-h2-wrapper" key={carving.id}>
+          <div className="cart-card-wrapper" key={carving.id}>
+            <div className="cart-h2-wrapper">
               <h2>{carving.carvingName}</h2>
             </div>
             <div className="cart-product-img-wrapper">

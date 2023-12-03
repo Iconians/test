@@ -1,23 +1,27 @@
 export const addCarvingForm = [
   {
+    key: "1",
     labelName: "Carving Name",
     type: "text",
     placeHolder: "Carving Name",
     name: "carvingName",
   },
   {
+    key: "2",
     type: "radio",
     labelName: "Hand Carved",
     name: "typeOfCarving",
     value: "handCarving",
   },
   {
+    key: "3",
     type: "radio",
     labelName: "Machined Carved",
     name: "typeOfCarving",
     value: "machinedCarving",
   },
   {
+    key: "4",
     type: "radio",
     labelName: "Do you want to sell this carving?",
     name: "sellCarving",

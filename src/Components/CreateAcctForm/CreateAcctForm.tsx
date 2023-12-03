@@ -71,15 +71,15 @@ export const CreateAcctForm = ({ changeForm, redirectToHome }: props) => {
           setInputError(false);
         }
       },
-      confirmpassword: (value: string) => {
-        const checkPassword = passwordValidation(value);
-        if (!checkPassword) {
-          toast.error("Invalid Password");
-          setInputError(true);
-        } else {
-          setInputError(false);
-        }
-      },
+      // confirmpassword: (value: string) => {
+      //   const checkPassword = passwordValidation(value);
+      //   if (!checkPassword) {
+      //     toast.error("Invalid Password");
+      //     setInputError(true);
+      //   } else {
+      //     setInputError(false);
+      //   }
+      // },
     };
     validations[name as keyof typeof validations](value);
   };

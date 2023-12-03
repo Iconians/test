@@ -7,6 +7,8 @@ import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
 import "./CartModal.css";
 import { useNavigate } from "react-router-dom";
 import { set } from "lodash-es";
+import { useFavoriteContext } from "../../providers/favorites.provider";
+import toast from "react-hot-toast";
 
 interface props {
   openModal: boolean;
@@ -17,7 +19,7 @@ export const CartModal = ({ openModal, openCartModal }: props) => {
   const { cartItems } = useCarvingContext();
   const [subtotal, setSubtotal] = useState<number | string>(0);
   const navigate = useNavigate();
-  // console.log(cartItems);
+  const { getUserId } = useFavoriteContext();
 
   const findSubtotal = () => {
     let total = 0;
@@ -28,9 +30,14 @@ export const CartModal = ({ openModal, openCartModal }: props) => {
   };
 
   const goToCartPage = () => {
-    navigate("/CheckoutPage", {
-      state: { subtotal: subtotal, cartItems: cartItems },
-    });
+    const user = getUserId();
+    if (user !== undefined) {
+      navigate("/CheckoutPage", {
+        state: { subtotal: subtotal, cartItems: cartItems },
+      });
+    } else {
+      toast.error("Please log In to checkout");
+    }
     openCartModal();
   };
 

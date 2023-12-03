@@ -9,6 +9,38 @@
   flex-direction: column;
 }
 
+.form-inputs {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  text-align: center;
+  align-items: center;
+  padding-left: 15px;
+
+}
+
+.form-inputs > input {
+  margin-top: 5px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  border-color: sandybrown;
+  outline-color: saddlebrown;
+  width: 100%;
+  height: 30px;
+  margin-left: 7px;
+  padding-left: 15px;
+}
+
+.price-input {
+  padding-left: 15px;
+  margin-top: 5px;
+}
+
+.image-input {
+  padding-left: 15px;
+  margin-top: 5px;
+}
+
 #file-label {
   text-align: start;
   margin-left: 9px;
@@ -37,9 +69,11 @@
 
 .textarea-label {
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .textarea {
+  padding: 10px;
   width: 575px;
   height: 131px;
   margin-left: 7px;
