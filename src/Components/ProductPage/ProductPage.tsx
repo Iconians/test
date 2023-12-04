@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { addFavorite } from "../../fetches/addFavorite";
-import { fetchFavorites } from "../../fetches/fetchFavorites";
+import { getFavorites } from "../../fetches/getFavorites";
 import { Favorite } from "../../interfaces";
 import { useCarvingContext } from "../../providers/carvings.provider";
 import { useFavoriteContext } from "../../providers/favorites.provider";
@@ -96,7 +96,7 @@ export const ProductPage = () => {
   useEffect(() => {
     const userId = getUserId();
     if (userId !== undefined) {
-      fetchFavorites(userId).then((data) => {
+      getFavorites(userId).then((data) => {
         findFavorites(data);
       });
     }

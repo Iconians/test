@@ -2,8 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { addToUserCart } from "../fetches/addToUserCart";
 import { deleteCartFetch } from "../fetches/deleteCartFetch";
-import { fetchUsersCart } from "../fetches/fetchUsersCart";
-import { fetchCarvings } from "../fetches/fetcthCarvings";
+import { getUsersCart } from "../fetches/getUsersCart";
+import { getCarvings } from "../fetches/getCarvings";
 import { Carving } from "../interfaces";
 import { get } from "http";
 
@@ -68,7 +68,7 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
 
   const refreshCart = async () => {
     const userId = getUserId();
-    const getUserCart = await fetchUsersCart(userId);
+    const getUserCart = await getUsersCart(userId);
     if (getUserCart.length) {
       setCartItems([...getUserCart]);
     } else {
@@ -82,13 +82,13 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
     setCartItems([]);
   };
 
-  const fetchAllCarvings = async () => {
-    const carvings = await fetchCarvings();
+  const refetchAllCarvings = async () => {
+    const carvings = await getCarvings();
     setCarvingArray(carvings);
   };
 
   useEffect(() => {
-    fetchAllCarvings();
+    refetchAllCarvings();
   }, []);
 
   useEffect(() => {
@@ -107,7 +107,7 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
         openModal,
         openCartModal,
         deleteItemsFromCartAfterPurchase,
-        fetchAllCarvings,
+        fetchAllCarvings: refetchAllCarvings,
       }}
     >
       {children}
