@@ -26,6 +26,13 @@
   cursor: pointer;
 }
 
+.item-x {
+  position: absolute;
+  top: 68px;
+  left: 5px;
+  color: sandybrown;
+}
+
 .subtotal-wrapper {
   display: flex;
   flex-direction: column;

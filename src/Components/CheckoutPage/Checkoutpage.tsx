@@ -157,6 +157,7 @@ export const CheckoutPage = () => {
         setZip(value);
         break;
       case "cardnumber":
+        if (value === "") setCardNumber("");
         let mask = value.split(" ").join("");
         mask = mask.match(new RegExp(".{1,4}", "g")).join(" ");
         setCardNumber(mask);
@@ -214,7 +215,6 @@ export const CheckoutPage = () => {
     if (inputError) toast.error("Please fill out all fields");
 
     if (!inputError) {
-      // console.log(token);
       const token = localStorage.getItem("token");
       purchaseItems(formData, token || "").then((res) => {
         if (res.ok) {
@@ -222,7 +222,9 @@ export const CheckoutPage = () => {
           fetchAllCarvings();
           deleteItemsFromCartAfterPurchase();
         } else if (res.status === 401) {
-          toast.error("Session ended Please Log In");
+          res.json().then((data) => {
+            toast.error(data.message);
+          });
         } else {
           res.json().then((data) => {
             console.log(data.message);
@@ -283,6 +285,7 @@ export const CheckoutPage = () => {
             onChange={updateValue}
             onBlur={handleBlur}
             maxLength={5}
+            id="shipping-inputs"
           />
           <h2>Payment</h2>
           <label htmlFor="card-number">Card Numbers</label>
@@ -293,6 +296,8 @@ export const CheckoutPage = () => {
             onChange={updateValue}
             onBlur={handleBlur}
             maxLength={cardLength}
+            id="shipping-inputs"
+            placeholder="Card Number"
           />
           <div className="expire-wrapper">
             <label htmlFor="card-month-expire">Expire Month</label>
@@ -327,6 +332,7 @@ export const CheckoutPage = () => {
             onChange={updateValue}
             onBlur={handleBlur}
             maxLength={3}
+            id="shipping-inputs"
           />
           <input type="submit" />
         </form>

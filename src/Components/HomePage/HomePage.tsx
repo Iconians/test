@@ -33,11 +33,6 @@ export const HomePage = () => {
           key={info.id}
         />
       ))}
-
-      <div className="disclaimer">
-        Don't use your real passwords as this site is unsecure and ones can
-        easily find them
-      </div>
     </div>
   );
 };

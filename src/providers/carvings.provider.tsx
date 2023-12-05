@@ -5,7 +5,8 @@ import { deleteCartFetch } from "../fetches/deleteCartFetch";
 import { getUsersCart } from "../fetches/getUsersCart";
 import { getCarvings } from "../fetches/getCarvings";
 import { Carving } from "../interfaces";
-import { get } from "http";
+import { useAuthContext } from "./auth.provider";
+import { deleteSelectedItemFromCart } from "../fetches/deleteSelectedItemFromCart";
 
 interface CarvingContextInterface {
   carvingArray: Carving[];
@@ -15,6 +16,7 @@ interface CarvingContextInterface {
   openCartModal: () => void;
   deleteItemsFromCartAfterPurchase: () => void;
   fetchAllCarvings: () => void;
+  deleteItemFromCart: (carving: Carving) => void;
 }
 
 type CarvingProviderProps = {
@@ -27,6 +29,7 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
   const [carvingArray, setCarvingArray] = useState<Carving[]>([]);
   const [cartItems, setCartItems] = useState<Carving[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const { user } = useAuthContext();
 
   const openCartModal = () => {
     if (openModal === false) {
@@ -87,6 +90,19 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
     setCarvingArray(carvings);
   };
 
+  const deleteItemFromCart = async (carving: Carving) => {
+    const userId = getUserId();
+    const deleteItem = await deleteSelectedItemFromCart(carving, userId);
+    if (deleteItem.ok) {
+      toast.success("Item deleted from cart");
+      refreshCart();
+    } else {
+      deleteItem.json().then((data) => {
+        toast.error(data.message);
+      });
+    }
+  };
+
   useEffect(() => {
     refetchAllCarvings();
   }, []);
@@ -96,7 +112,7 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
     if (user !== undefined) {
       refreshCart();
     }
-  }, [cartItems.length]);
+  }, [cartItems.length, user !== undefined]);
 
   return (
     <CarvingContext.Provider
@@ -108,6 +124,7 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
         openCartModal,
         deleteItemsFromCartAfterPurchase,
         fetchAllCarvings: refetchAllCarvings,
+        deleteItemFromCart: deleteItemFromCart,
       }}
     >
       {children}
@@ -125,5 +142,6 @@ export const useCarvingContext = () => {
     openCartModal: context.openCartModal,
     deleteItemsFromCartAfterPurchase: context.deleteItemsFromCartAfterPurchase,
     fetchAllCarvings: context.fetchAllCarvings,
+    deleteItemFromCart: context.deleteItemFromCart,
   };
 };

@@ -15,7 +15,7 @@ export const ConfirmationPage = () => {
           as possible
         </p>
         <div>
-          <button className="signinBtn createAcctBtn" onClick={backHome}>
+          <button className="home-button" onClick={backHome}>
             Back to home
           </button>
         </div>

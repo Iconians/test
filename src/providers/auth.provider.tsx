@@ -3,6 +3,7 @@ import { toast } from "react-hot-toast";
 import { newUser, Users } from "../interfaces";
 import { signInUser } from "../fetches/signInUser";
 import { CreateAUser } from "../fetches/CreateAUser";
+import { getUsersCart } from "../fetches/getUsersCart";
 
 interface AuthContextInterface {
   user: Users | undefined;

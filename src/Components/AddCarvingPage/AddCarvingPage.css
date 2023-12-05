@@ -29,16 +29,25 @@
   height: 30px;
   margin-left: 7px;
   padding-left: 15px;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: gray;
 }
 
 .price-input {
   padding-left: 15px;
   margin-top: 5px;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #1a1414;
 }
 
 .image-input {
   padding-left: 15px;
   margin-top: 5px;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #1a1414;
 }
 
 #file-label {
@@ -78,4 +87,9 @@
   height: 131px;
   margin-left: 7px;
   margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.textarea:focus {
+  outline-color: saddlebrown;
 }

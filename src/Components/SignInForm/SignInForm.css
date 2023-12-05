@@ -10,6 +10,10 @@
   color: white;
 }
 
+.text-inputs {
+  width: 95%;
+}
+
 .signinBtn {
   height: 30px;
   margin-bottom: 15px;
@@ -17,8 +21,11 @@
   border-radius: 20px;
   border-color: sandybrown;
   cursor: pointer;
+  font-size: 18px;
+  width: 300px;
 }
 
 .createAcctBtn {
   width: 120px;
+  font-size: 18px;
 }

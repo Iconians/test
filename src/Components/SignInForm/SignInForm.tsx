@@ -44,6 +44,7 @@ export const SignInForm = ({ changeForm, redirectToHome }: props) => {
         >
           <label htmlFor="Email">Email</label>
           <input
+            className="text-inputs"
             name="email"
             type="text"
             placeholder="Email"
@@ -51,6 +52,7 @@ export const SignInForm = ({ changeForm, redirectToHome }: props) => {
           />
           <label htmlFor="password">Password</label>
           <input
+            className="text-inputs"
             name="password"
             type="password"
             placeholder="Password"

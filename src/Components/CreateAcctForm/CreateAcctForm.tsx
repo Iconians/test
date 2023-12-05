@@ -9,6 +9,7 @@ import {
   onlyTextValidation,
   passwordValidation,
 } from "../../validations";
+import "./CreateAcctForm.css";
 
 interface props {
   changeForm: () => void;
@@ -20,6 +21,7 @@ export const CreateAcctForm = ({ changeForm, redirectToHome }: props) => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [eye, setEye] = useState<boolean>(false);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [inputError, setInputError] = useState(true);
 
@@ -71,15 +73,6 @@ export const CreateAcctForm = ({ changeForm, redirectToHome }: props) => {
           setInputError(false);
         }
       },
-      // confirmpassword: (value: string) => {
-      //   const checkPassword = passwordValidation(value);
-      //   if (!checkPassword) {
-      //     toast.error("Invalid Password");
-      //     setInputError(true);
-      //   } else {
-      //     setInputError(false);
-      //   }
-      // },
     };
     validations[name as keyof typeof validations](value);
   };
@@ -101,8 +94,10 @@ export const CreateAcctForm = ({ changeForm, redirectToHome }: props) => {
     const input = document.getElementById("eye") as HTMLInputElement;
     if (input.type === "password") {
       input.type = "text";
+      setEye(true);
     } else {
       input.type = "password";
+      setEye(false);
     }
   };
 
@@ -123,8 +118,8 @@ export const CreateAcctForm = ({ changeForm, redirectToHome }: props) => {
           >
             <>
               {createAcctForm.map((input) => (
-                <label htmlFor={input.labelName}>
-                  {input.labeltext}
+                <div key={input.id} className="create-form-inputs">
+                  <label htmlFor={input.labelName}>{input.labeltext}</label>
                   <input
                     id={input.id}
                     name={input.inputName}
@@ -136,11 +131,11 @@ export const CreateAcctForm = ({ changeForm, redirectToHome }: props) => {
                   {input.inputName === "password" ? (
                     <FontAwesomeIcon
                       icon={faEye}
-                      className="eye"
+                      className={`eye ${eye ? "clicked-eye" : ""}`}
                       onClick={handleEye}
                     />
                   ) : null}
-                </label>
+                </div>
               ))}
               <input type="submit" value="Create Account" />
             </>

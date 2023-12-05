@@ -14,3 +14,14 @@
   color: white;
   font-size: 18px;
 }
+
+.home-button {
+  height: 30px;
+  margin-bottom: 15px;
+  outline-color: saddlebrown;
+  border-radius: 20px;
+  border-color: sandybrown;
+  cursor: pointer;
+  font-size: 18px;
+  width: 300px;
+}

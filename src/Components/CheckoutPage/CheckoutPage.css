@@ -14,13 +14,21 @@
   font-size: 18px;
 }
 
-.form-info-wrapper > form > input {width: 95%;}
+.form-info-wrapper > form > input {
+  width: 95%;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #1a1414;
+}
 .form-info-wrapper > form > select, .expire-wrapper > select {
   height: 30px;
   margin-bottom: 15px;
   outline-color: saddlebrown;
   border-radius: 20px;
   border-color: sandybrown;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #1a1414;
 }
 
 .shipping-info {
@@ -31,12 +39,20 @@
 }
 
 .shipping-info > input  {
-  width : 95%;
+  width : 90%;
   height: 30px;
   margin-bottom: 15px;
   outline-color: saddlebrown;
   border-radius: 20px;
   border-color: sandybrown;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #1a1414;
+  padding-left: 20px;
+}
+
+#shipping-inputs {
+  width: 90%;
 }
 
 .expire-wrapper > select {

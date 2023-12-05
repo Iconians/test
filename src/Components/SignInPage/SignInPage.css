@@ -24,12 +24,9 @@ form > label > input, form > input {
   border-radius: 20px;
   border-color: sandybrown;
   width: 100%;
-}
-
-.eye {
-  position: absolute;
-  right: 10px;
-  top: 28px;
-  cursor: pointer;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #1a1414;
+  padding-left: 20px;
 }
 
