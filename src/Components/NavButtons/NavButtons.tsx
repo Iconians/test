@@ -10,7 +10,7 @@ interface props {
 export const NavButtons = ({ openCartModal }: props) => (
   <div className="nav-btn-wrapper">
     <div className="button-div">
-      <Link className="signin-link" to="/SignInPage">
+      <Link className="signIn-link" to="/SignInPage">
         Sign In
       </Link>
     </div>

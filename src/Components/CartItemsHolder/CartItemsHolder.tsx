@@ -11,7 +11,7 @@ export const CartItemHolder = () => {
     deleteItemFromCart(carving);
   };
   return (
-    <div className="cart-itms-wrapper">
+    <div className="cart-items-wrapper">
       <>
         <h3>Cart Items</h3>
         {cartItems.map((carving) => (

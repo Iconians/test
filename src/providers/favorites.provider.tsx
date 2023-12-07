@@ -5,8 +5,7 @@ import { Carving, Favorite } from "../interfaces";
 
 interface FavoriteContextInterface {
   fetchFavoriteCarvings: () => Promise<Carving[]>;
-  getUserId: () => any;
-  // this is what I get when I hover over the getUserId
+  getUserId: () => string | undefined;
 }
 
 type FavoritesProviderProps = {
@@ -17,7 +16,7 @@ const FavoritesContext = createContext({} as FavoriteContextInterface);
 
 export const FavoriteProvider = ({ children }: FavoritesProviderProps) => {
   const getUserId = () => {
-    const user = localStorage.getItem("user");
+    const user = sessionStorage.getItem("user");
     if (user !== null) {
       const userId = JSON.parse(user)["id"];
       return userId;

@@ -8,7 +8,7 @@ interface props {
 }
 
 export const SignInForm = ({ changeForm, redirectToHome }: props) => {
-  const { signinUser } = useAuthContext();
+  const { signInUser: signInUser } = useAuthContext();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -24,8 +24,8 @@ export const SignInForm = ({ changeForm, redirectToHome }: props) => {
     }
   };
 
-  const formSignin = () => {
-    signinUser(email, password, redirectToHome);
+  const formSignIn = () => {
+    signInUser(email, password, redirectToHome);
   };
 
   return (
@@ -39,7 +39,7 @@ export const SignInForm = ({ changeForm, redirectToHome }: props) => {
           className="form"
           onSubmit={(e) => {
             e.preventDefault();
-            formSignin();
+            formSignIn();
           }}
         >
           <label htmlFor="Email">Email</label>
@@ -61,7 +61,7 @@ export const SignInForm = ({ changeForm, redirectToHome }: props) => {
           <input type="submit" value="Sign In" />
         </form>
         <div>
-          <button className="signinBtn" onClick={changeForm}>
+          <button className="signInBtn" onClick={changeForm}>
             Create Account
           </button>
         </div>

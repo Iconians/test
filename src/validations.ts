@@ -1,5 +1,3 @@
-import { toast } from "react-hot-toast";
-
 export const emailValidation = (value: string) => {
   if (value) {
     if (/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/.test(value)) {

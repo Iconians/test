@@ -38,7 +38,7 @@ export const CreateAcctForm = ({ changeForm, redirectToHome }: props) => {
       case "password":
         setPassword(value);
         break;
-      case "confirmpassword":
+      case "confirmPassword":
         setConfirmPassword(value);
         break;
     }
@@ -49,7 +49,7 @@ export const CreateAcctForm = ({ changeForm, redirectToHome }: props) => {
       name: (value: string) => {
         const checkName = onlyTextValidation(value);
         if (!checkName) {
-          toast.error("Alpabetical letters only");
+          toast.error("Alphabetical letters only");
           setInputError(true);
         } else {
           setInputError(false);
@@ -119,7 +119,7 @@ export const CreateAcctForm = ({ changeForm, redirectToHome }: props) => {
             <>
               {createAcctForm.map((input) => (
                 <div key={input.id} className="create-form-inputs">
-                  <label htmlFor={input.labelName}>{input.labeltext}</label>
+                  <label htmlFor={input.labelName}>{input.labelText}</label>
                   <input
                     id={input.id}
                     name={input.inputName}
@@ -141,7 +141,7 @@ export const CreateAcctForm = ({ changeForm, redirectToHome }: props) => {
             </>
           </form>
           <div>
-            <button className="signinBtn createAcctBtn" onClick={changeForm}>
+            <button className="signInBtn createAcctBtn" onClick={changeForm}>
               Sign In
             </button>
           </div>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AMERICANEXPRESS, OTHERCARDS } from "../../constants";
+import { AMERICAN_EXPRESS, OTHER_CARDS } from "../../constants";
 import { listOfMonths } from "../../listOfMonths";
 import { listOfStates } from "../../ListOfStates";
 import { listOfYears } from "../../listOfYears";
@@ -61,9 +61,9 @@ export const CheckoutPage = () => {
 
   const findCardLength = (cardType: string) => {
     if (cardType === "AMERICAN_EXPRESS") {
-      return AMERICANEXPRESS.length;
+      return AMERICAN_EXPRESS.length;
     } else {
-      return OTHERCARDS.length;
+      return OTHER_CARDS.length;
     }
   };
 
@@ -106,7 +106,7 @@ export const CheckoutPage = () => {
           setInputError(false);
         }
       },
-      securitycode: (value: string) => {
+      securityCode: (value: string) => {
         const checkSecurityCodeLenth = securityCodeValidation(3, value);
         const checkSecurityCodeIsNumber = onlyNumberValidation(value);
         if (!checkSecurityCodeLenth && value.length > 0) {
@@ -168,7 +168,7 @@ export const CheckoutPage = () => {
       case "card-year-expire":
         setExpireYear(value);
         break;
-      case "securitycode":
+      case "securityCode":
         setSecurityCode(value);
     }
   };
@@ -215,7 +215,7 @@ export const CheckoutPage = () => {
     if (inputError) toast.error("Please fill out all fields");
 
     if (!inputError) {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       purchaseItems(formData, token || "").then((res) => {
         if (res.ok) {
           navigate("/ConfirmationPage");
@@ -327,7 +327,7 @@ export const CheckoutPage = () => {
           <input
             type="text"
             placeholder="cvs"
-            name="securitycode"
+            name="securityCode"
             value={securityCode}
             onChange={updateValue}
             onBlur={handleBlur}

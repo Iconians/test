@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { carvingPictures } from "../../assets/carvingPictures";
 import { addCarvingForm } from "../../formInputData";
 import { useFavoriteContext } from "../../providers/favorites.provider";
 import { NavBar } from "../NavBar/NavBar";
 import "./AddCarvingPage.css";
 import { uploadCarvings } from "../../fetches/uploadCarving";
-import { useAuthContext } from "../../providers/auth.provider";
 import { useCarvingContext } from "../../providers/carvings.provider";
 
 export const AddCarvingPage = () => {
@@ -19,7 +17,6 @@ export const AddCarvingPage = () => {
   const [story, setStory] = useState("");
   const { getUserId } = useFavoriteContext();
   const { fetchAllCarvings } = useCarvingContext();
-  // const { token } = useAuthContext();
 
   const captureInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -51,7 +48,7 @@ export const AddCarvingPage = () => {
   };
 
   const getUserName = () => {
-    const user = localStorage.getItem("user");
+    const user = sessionStorage.getItem("user");
     if (user !== null) {
       const userId = JSON.parse(user)["name"];
       return userId;
@@ -69,6 +66,14 @@ export const AddCarvingPage = () => {
     }
     if (availableToSell === true && !price.length) {
       toast.error("add a price to your carving");
+      return false;
+    }
+    if (price.length && !parseInt(price)) {
+      toast.error("price must be a number");
+      return false;
+    }
+    if (!image.length) {
+      toast.error("add an image of your carving");
       return false;
     }
     if (!story.length) {
@@ -89,8 +94,7 @@ export const AddCarvingPage = () => {
   };
 
   const newCarving = () => {
-    // when form submits we do this stuff
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const areInputsValid = validations();
     if (areInputsValid === true && token) {
       const carving = {
@@ -189,27 +193,9 @@ export const AddCarvingPage = () => {
             type="text"
             name="image"
             placeholder="Image url"
-            // onChange={(e) => {
-            //   setImage(e.target.value);
-            // }}
             onChange={captureInput}
             value={image}
           />
-
-          {/* <select
-            className="img-select"
-            name="image"
-            id=""
-            onChange={(e) => {
-              setImage(e.target.value);
-            }}
-            value={image}
-          >
-            {Object.entries(carvingPictures).map(([label, pictureValue]) => {
-              return <option value={pictureValue} key={label}>{label}</option>;
-            })}
-
-          </select> */}
           <label htmlFor="story" className="textarea-label">
             Write your Story
           </label>

@@ -40,7 +40,7 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
   };
 
   const getUserId = () => {
-    const user = localStorage.getItem("user");
+    const user = sessionStorage.getItem("user");
     if (user !== null) {
       const userId = JSON.parse(user)["id"];
       return userId;
@@ -53,7 +53,7 @@ export const CarvingProvider = ({ children }: CarvingProviderProps) => {
       toast.error("Please log In to add carving to cart");
       return;
     }
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const addToCart = await addToUserCart(item, userId, token || "");
     if (addToCart.ok) {
       toast.success("Added to cart");

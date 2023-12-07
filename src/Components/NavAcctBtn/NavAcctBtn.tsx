@@ -9,10 +9,10 @@ interface props {
 }
 
 export const NavAcctBtn = ({ openCartModal }: props) => {
-  const { user, signoutUser } = useAuthContext();
+  const { user, signOutUser } = useAuthContext();
 
   const signOut = () => {
-    signoutUser();
+    signOutUser();
   };
   return (
     <div className="buttons-wrapper">
